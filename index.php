@@ -16,7 +16,7 @@ $stats = array(
 
 foreach(glob(__DIR__ . '/*', GLOB_ONLYDIR) as $dir) {
     $item = pathinfo($dir);
-    $name = $item['filename'];
+    $name = $item['basename'];
 
     if(in_array($name, $exclude)) {
         continue;
@@ -27,19 +27,24 @@ foreach(glob(__DIR__ . '/*', GLOB_ONLYDIR) as $dir) {
 
     foreach(glob($dir . '/*', GLOB_ONLYDIR) as $branch) {
         $branch_parts = pathinfo($branch);
-        $branch_name = $branch_parts['filename'];
+        $branch_name = $branch_parts['basename'];
 
         $systems[$name]['branches'][] = $branch_name;
 
         foreach(glob($branch . '/*', GLOB_ONLYDIR) as $commit) {
             $commit_parts = pathinfo($commit);
+            $audit_path = $commit . '/_report';
+            $has_audit = file_exists($audit_path);
+
+            $commit_url = $name . '/' . $branch_name . '/' . $commit_parts['basename'];
 
             $systems[$name]['commits'][] = array(
                 'branch' => $branch_name,
                 'dir' => $commit,
-                'url' => $name . '/' . $branch_name . '/' . $commit_parts['filename'],
-                'sha' => $commit_parts['filename'],
+                'url' => $commit_url,
+                'sha' => $commit_parts['basename'],
                 'time' => filectime($commit),
+                'audit' => $has_audit ? $commit_url . '/_report/' : ''
             );
 
             $stats['commits_total']++;
@@ -82,20 +87,17 @@ foreach(glob(__DIR__ . '/*', GLOB_ONLYDIR) as $dir) {
         <div class="container">
             <nav class="navbar navbar-expand-md no-gutters">
                 <div class="col-2 text-left">
-                    <i class="fa fa-warning"></i> ci.uffs.cc
+                    <i class="fa fa-area-chart"></i> ci.uffs.cc
                 </div>
 
                 <div class="collapse navbar-collapse justify-content-center col-8" id="navbarNav4">
                     <ul class="navbar-nav justify-content-center">
-                        <li class="nav-item active">
-                            <a class="nav-link" href="https://www.froala.com">Home <span class="sr-only">(current)</span></a>
-                        </li>
                     </ul>
                 </div>
 
                 <ul class="navbar-nav col-2 justify-content-end">
                     <li class="nav-item">
-                        <a class="nav-link" href="https://www.froala.com"><i class="fa fa-github"></i></a>
+                        <a class="nav-link" href="https://www.froala.com"><i class="fa fa-github"></i> Github</a>
                     </li>
                 </ul>
             </nav>
@@ -107,7 +109,7 @@ foreach(glob(__DIR__ . '/*', GLOB_ONLYDIR) as $dir) {
             <div class="col-6">
                 <div class="panel">
                     <div class="panel-body">
-                        <h3><i class="fa fa-warning"></i> Metrics </h3>
+                        <h3><i class="fa fa-bar-chart"></i> Stats </h3>
                         <hr>
                         <p>
                             Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
@@ -145,24 +147,31 @@ foreach(glob(__DIR__ . '/*', GLOB_ONLYDIR) as $dir) {
             <div class="col-12">
                 <div class="panel panel-filled">
                     <div class="panel-heading">
-                        <h2><?php echo $name; ?></h2>
+                        <h2><i class="fa fa-server"></i> <?php echo $name; ?></h2>
                     </div>
                     <div class="panel-body">
                         <table id="tableServices-<?php echo $name; ?>" class="table table-striped table-hover table-responsive-sm no-footer"
                             role="grid">
                             <thead>
                                 <tr role="row">
+                                    <th>Name</th>
                                     <th>Date</th>
                                     <th>Commit</th>
+                                    <th>Misc</th>
+                                </tr>
                             </thead>
 
                             <tbody>
                                 <?php foreach($system['commits'] as $commit) { ?>
-                                    <tr role="row" class="odd">
+                                    <tr role="row">
+                                        <td><?php echo $name; ?></td>
                                         <td><?php echo date('Y-m-d H:i:s', $commit['time']); ?></td>
                                         <td>
                                             <span class="badge badge-<?php echo isset($branch_style[$commit['branch']]) ? $branch_style[$commit['branch']] : 'warning'; ?>"><?php echo $commit['branch']; ?></span>
                                             <code><a href="./<?php echo $commit['url']; ?>" target="_blank"><?php echo $commit['sha']; ?></a></code>
+                                        </td>
+                                        <td>
+                                            <?php if($commit['audit'] != '') { ?> <a href="./<?php echo $commit['audit']; ?>" target="_blank"><i class="fa fa-bar-chart" title="Lighthouse Performance Report"></i></a> <?php } ?>
                                         </td>
                                     </tr>
                                 <?php } ?>
