@@ -1,3 +1,69 @@
+<?php
+
+$exclude = array('.', '..', 'css', 'fonts');
+$branch_style = array(
+    'dev' => 'success',
+    'master' => 'info'
+);
+
+$systems = array();
+$stats = array(
+    'commits_total' => 0,
+    'commits_today' => 0,
+    'commits_week' => 0,
+    'systems' => 0
+);
+
+foreach(glob(__DIR__ . '/*', GLOB_ONLYDIR) as $dir) {
+    $item = pathinfo($dir);
+    $name = $item['filename'];
+
+    if(in_array($name, $exclude)) {
+        continue;
+    }
+
+    $stats['systems']++;
+    $systems[$name] = array('name' => $name, 'branches' => array(), 'commits' => array());
+
+    foreach(glob($dir . '/*', GLOB_ONLYDIR) as $branch) {
+        $branch_parts = pathinfo($branch);
+        $branch_name = $branch_parts['filename'];
+
+        $systems[$name]['branches'][] = $branch_name;
+
+        foreach(glob($branch . '/*', GLOB_ONLYDIR) as $commit) {
+            $commit_parts = pathinfo($commit);
+
+            $systems[$name]['commits'][] = array(
+                'branch' => $branch_name,
+                'dir' => $commit,
+                'url' => $name . '/' . $branch_name . '/' . $commit_parts['filename'],
+                'sha' => $commit_parts['filename'],
+                'time' => filectime($commit),
+            );
+
+            $stats['commits_total']++;
+        }
+
+        usort($systems[$name]['commits'], function($a, $b) {
+            return $a['time'] < $b['time'];
+        });
+
+        $yesterday = strtotime('-1 day');
+        $last_week = strtotime('-1 week');
+
+        foreach($systems[$name]['commits'] as $commit) {
+            if($commit['time'] >= $yesterday) {
+                $stats['commits_today']++;
+            }
+
+            if($commit['time'] >= $last_week) {
+                $stats['commits_week']++;
+            }
+        }
+    }
+}
+?>
 <html>
 <head>
     <title>CI - Ciência da Computação - UFFS</title>
@@ -72,36 +138,43 @@
             </div>
         </div>
 
+        <?php
+            foreach($systems as $name => $system) {
+        ?>
         <div class="row">
             <div class="col-12">
                 <div class="panel panel-filled">
                     <div class="panel-heading">
-                        <h2>Something</h2>
+                        <h2><?php echo $name; ?></h2>
                     </div>
                     <div class="panel-body">
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua.</p>
-                        <table id="tableServices" class="table table-striped table-hover table-responsive-sm no-footer"
+                        <table id="tableServices-<?php echo $name; ?>" class="table table-striped table-hover table-responsive-sm no-footer"
                             role="grid">
                             <thead>
                                 <tr role="row">
-                                    <th tabindex="0">Name</th>
-                                    <th tabindex="0">Position</th>
-                                    <th tabindex="0">Position</th>
+                                    <th>Date</th>
+                                    <th>Commit</th>
                             </thead>
 
                             <tbody>
-                                <tr role="row" class="odd">
-                                    <td>Airi Satou</td>
-                                    <td>Accountant</td>
-                                    <td>Tokyo</td>
-                                </tr>
+                                <?php foreach($system['commits'] as $commit) { ?>
+                                    <tr role="row" class="odd">
+                                        <td><?php echo date('Y-m-d H:i:s', $commit['time']); ?></td>
+                                        <td>
+                                            <span class="badge badge-<?php echo isset($branch_style[$commit['branch']]) ? $branch_style[$commit['branch']] : 'warning'; ?>"><?php echo $commit['branch']; ?></span>
+                                            <code><a href="./<?php echo $commit['url']; ?>" target="_blank"><?php echo $commit['sha']; ?></a></code>
+                                        </td>
+                                    </tr>
+                                <?php } ?>
                             </tbody>
                         </table>
                     </div>
                 </div>
             </div>
         </div>
+        <?php
+            }
+        ?>
     </div>
 
     <footer class="fdb-block footer-large bg-dark">

@@ -40,6 +40,19 @@ strong {
   color: #F0556B;
 }
 
+a,
+a:link,
+a:visited,
+a:active {
+  color: #949ba2;
+  text-decoration: underline;
+}
+
+a:hover {
+  color: #b6b6b6;
+  text-decoration: underline;
+}
+
 hr {
   margin-top: 20px;
   margin-bottom: 20px;
