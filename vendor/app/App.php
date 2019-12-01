@@ -22,12 +22,20 @@ class App {
         $this->loadSystems($base_dir);
     }
 
+    public function getSystems() {
+        return $this->systems;
+    }
+
+    public function getBranchStyle($name) {
+        return isset($this->config['branch_style'][$name]) ? $this->config['branch_style'][$name] : 'info';
+    }
+
     public function getSystem($dir_name) {
-        if(!isset($this->system[$dir_name])) {
+        if(!isset($this->systems[$dir_name])) {
             throw new Exception("Unknown system named '$dir_name'. Check if a folder named '$dir_name' exists.");
         }
 
-        return $this->system[$dir_name];
+        return $this->systems[$dir_name];
     }
 
     private function splitGitRepoURL($git_repo_url) {
@@ -38,6 +46,13 @@ class App {
             'owner' => $parts[count($parts) - 2],
             'name' => $parts[count($parts) - 1],
         );
+    }
+
+    private function urlencode($string) {
+        $replacements = array('%20');
+        $entities = array('+');
+
+        return str_replace($entities, $replacements, urlencode($string));
     }
 
     private function createSystemEntry($dir_name) {
@@ -55,6 +70,8 @@ class App {
 
         $system = array_merge($ini_info, $base_info);
         $system['repo'] = $this->splitGitRepoURL($system['git_repo_url']);
+
+        $system['github_workflow_name'] = $this->urlencode($system['github_workflow_name']);
 
         return $system;
     }
@@ -154,7 +171,6 @@ class App {
                 $this->countCommitStats($system['commits']);
             }
 
-            var_dump($system);
             $this->systems[$name] = $system;
         }
     }

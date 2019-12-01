@@ -1,76 +1,6 @@
 <?php
-
-require_once(__DIR__ . '/vendor/app/App.php');
-$app = new App(__DIR__);
-
-$exclude = array('.', '..', 'css', 'fonts');
-$branch_style = array(
-    'dev' => 'info',
-    'master' => 'success'
-);
-
-$systems = array();
-$stats = array(
-    'commits_total' => 0,
-    'commits_today' => 0,
-    'commits_week' => 0,
-    'systems' => 0
-);
-
-foreach(glob(__DIR__ . '/*', GLOB_ONLYDIR) as $dir) {
-    $item = pathinfo($dir);
-    $name = $item['basename'];
-
-    if(in_array($name, $exclude)) {
-        continue;
-    }
-
-    $stats['systems']++;
-    $systems[$name] = array('name' => $name, 'branches' => array(), 'commits' => array());
-
-    foreach(glob($dir . '/*', GLOB_ONLYDIR) as $branch) {
-        $branch_parts = pathinfo($branch);
-        $branch_name = $branch_parts['basename'];
-
-        $systems[$name]['branches'][] = $branch_name;
-
-        foreach(glob($branch . '/*', GLOB_ONLYDIR) as $commit) {
-            $commit_parts = pathinfo($commit);
-            $audit_path = $commit . '/_report';
-            $has_audit = file_exists($audit_path);
-
-            $commit_url = $name . '/' . $branch_name . '/' . $commit_parts['basename'];
-
-            $systems[$name]['commits'][] = array(
-                'branch' => $branch_name,
-                'dir' => $commit,
-                'url' => $commit_url,
-                'sha' => $commit_parts['basename'],
-                'time' => filectime($commit),
-                'audit' => $has_audit ? $commit_url . '/_report/' : ''
-            );
-
-            $stats['commits_total']++;
-        }
-
-        usort($systems[$name]['commits'], function($a, $b) {
-            return $a['time'] < $b['time'];
-        });
-
-        $yesterday = strtotime('-1 day');
-        $last_week = strtotime('-1 week');
-
-        foreach($systems[$name]['commits'] as $commit) {
-            if($commit['time'] >= $yesterday) {
-                $stats['commits_today']++;
-            }
-
-            if($commit['time'] >= $last_week) {
-                $stats['commits_week']++;
-            }
-        }
-    }
-}
+    require_once(__DIR__ . '/vendor/app/App.php');
+    $app = new App(__DIR__);
 ?>
 <html>
 <head>
@@ -145,7 +75,7 @@ foreach(glob(__DIR__ . '/*', GLOB_ONLYDIR) as $dir) {
         </div>
 
         <?php
-            foreach($systems as $name => $system) {
+            foreach($app->getSystems() as $name => $system) {
         ?>
         <div class="row">
             <div class="col-12">
@@ -153,7 +83,7 @@ foreach(glob(__DIR__ . '/*', GLOB_ONLYDIR) as $dir) {
                     <div class="panel-heading">
                         <h2 class="float-left"><i class="fa fa-server"></i> <?php echo $name; ?></h2>
                         <div class="float-right">
-                            <img src="https://img.shields.io/github/workflow/status/ccuffs/<?php echo $name; ?>/Website%20CI?label=%20&logo=github&logoColor=white&style=for-the-badge" title="Build status" />
+                            <img src="https://img.shields.io/github/workflow/status/<?php echo $system['repo']['owner']; ?>/<?php echo $name; ?>/<?php echo $system['github_workflow_name']; ?>?label=%20&logo=github&logoColor=white&style=for-the-badge" title="Build status" />
                         </div>
                     </div>
                     <div class="panel-body">
@@ -174,7 +104,7 @@ foreach(glob(__DIR__ . '/*', GLOB_ONLYDIR) as $dir) {
                                         <td><?php echo $name; ?></td>
                                         <td><?php echo date('Y-m-d H:i:s', $commit['time']); ?></td>
                                         <td>
-                                            <span class="badge badge-<?php echo isset($branch_style[$commit['branch']]) ? $branch_style[$commit['branch']] : 'warning'; ?>"><?php echo $commit['branch']; ?></span>
+                                            <span class="badge badge-<?php echo $app->getBranchStyle($commit['branch']); ?>"><?php echo $commit['branch']; ?></span>
                                             <code><a href="./<?php echo $commit['url']; ?>" target="_blank"><?php echo $commit['sha']; ?></a></code>
                                         </td>
                                         <td class="text-right">
