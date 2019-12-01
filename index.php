@@ -73,6 +73,7 @@ foreach(glob(__DIR__ . '/*', GLOB_ONLYDIR) as $dir) {
 <head>
     <title>CI - Ciência da Computação - UFFS</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="robots" content="index, nofollow">
 
     <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Roboto:100,100i,300,300i,400,400i,500,500i,700,700i,900,900i">
 
