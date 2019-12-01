@@ -2,8 +2,8 @@
 
 $exclude = array('.', '..', 'css', 'fonts');
 $branch_style = array(
-    'dev' => 'success',
-    'master' => 'info'
+    'dev' => 'info',
+    'master' => 'success'
 );
 
 $systems = array();
