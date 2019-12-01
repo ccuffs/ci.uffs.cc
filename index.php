@@ -1,5 +1,8 @@
 <?php
 
+require_once(__DIR__ . '/vendor/app/App.php');
+$app = new App(__DIR__);
+
 $exclude = array('.', '..', 'css', 'fonts');
 $branch_style = array(
     'dev' => 'info',
