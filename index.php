@@ -148,17 +148,20 @@ foreach(glob(__DIR__ . '/*', GLOB_ONLYDIR) as $dir) {
             <div class="col-12">
                 <div class="panel panel-filled">
                     <div class="panel-heading">
-                        <h2><i class="fa fa-server"></i> <?php echo $name; ?></h2>
+                        <h2 class="float-left"><i class="fa fa-server"></i> <?php echo $name; ?></h2>
+                        <div class="float-right">
+                            <img src="https://img.shields.io/github/workflow/status/ccuffs/<?php echo $name; ?>/Website%20CI?color=success&label=%20&logo=github&logoColor=white&style=for-the-badge" title="Build status" />
+                        </div>
                     </div>
                     <div class="panel-body">
                         <table id="tableServices-<?php echo $name; ?>" class="table table-striped table-hover table-responsive-sm no-footer"
                             role="grid">
                             <thead>
                                 <tr role="row">
-                                    <th>Name</th>
-                                    <th>Date</th>
-                                    <th>Commit</th>
-                                    <th>Misc</th>
+                                    <th style="width: 20%">Name</th>
+                                    <th style="width: 20%">Date</th>
+                                    <th style="width: 50%">Commit</th>
+                                    <th style="width: 10%"></th>
                                 </tr>
                             </thead>
 
@@ -171,7 +174,7 @@ foreach(glob(__DIR__ . '/*', GLOB_ONLYDIR) as $dir) {
                                             <span class="badge badge-<?php echo isset($branch_style[$commit['branch']]) ? $branch_style[$commit['branch']] : 'warning'; ?>"><?php echo $commit['branch']; ?></span>
                                             <code><a href="./<?php echo $commit['url']; ?>" target="_blank"><?php echo $commit['sha']; ?></a></code>
                                         </td>
-                                        <td>
+                                        <td class="text-right">
                                             <?php if($commit['audit'] != '') { ?> <a href="./<?php echo $commit['audit']; ?>" target="_blank"><i class="fa fa-bar-chart" title="Lighthouse Performance Report"></i></a> <?php } ?>
                                         </td>
                                     </tr>
