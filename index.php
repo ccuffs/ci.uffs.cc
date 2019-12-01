@@ -150,7 +150,7 @@ foreach(glob(__DIR__ . '/*', GLOB_ONLYDIR) as $dir) {
                     <div class="panel-heading">
                         <h2 class="float-left"><i class="fa fa-server"></i> <?php echo $name; ?></h2>
                         <div class="float-right">
-                            <img src="https://img.shields.io/github/workflow/status/ccuffs/<?php echo $name; ?>/Website%20CI?color=success&label=%20&logo=github&logoColor=white&style=for-the-badge" title="Build status" />
+                            <img src="https://img.shields.io/github/workflow/status/ccuffs/<?php echo $name; ?>/Website%20CI?label=%20&logo=github&logoColor=white&style=for-the-badge" title="Build status" />
                         </div>
                     </div>
                     <div class="panel-body">
