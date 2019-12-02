@@ -42,13 +42,13 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-8">
+            <div class="col-12">
                 <div class="panel">
                     <div class="panel-body">
-                        <h3><i class="fa fa-bar-chart"></i> Stats </h3>
+                        <h3><i class="fa fa-bar-chart"></i> Stats</h3>
                         <hr>
                         <p>
-                            Statistics presented below are gathered from CI builds. They might be different from the real amount of commits shown in the project repository. 
+                            This dashboard shows the statistics of CI buils related to the infra-strucutre of the <a href="https://cc.uffs.edu.br" target="_blank">Computer Science program</a> at <a href="http://www.uffs.edu.br" target="_blank">Federal University of Fronteira Sul</a>. Numbers presented below are gathered from CI builds. They might be different from the real amount of commits shown in the project repository. 
                         </p>
                         <hr>
                         <div class="row stats">
