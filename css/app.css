@@ -23,6 +23,19 @@ h2 {
   font-size: 1.3em;
 }
 
+h2 small {
+  margin-left: 0.6em;
+  font-size: 0.8em;
+}
+
+.muted {
+    color: #5c5f64;
+}
+
+.lowered {
+    text-transform: lowercase;
+}
+
 strong {
   color: #FFFFFF;
   font-size: 1.2em;
@@ -40,17 +53,27 @@ strong {
   color: #F0556B;
 }
 
-a,
-a:link,
-a:visited,
-a:active {
+.row a,
+.row a:link,
+.row a:visited,
+.row a:active {
   color: #949ba2;
   text-decoration: underline;
 }
 
-a:hover {
+.row a:hover {
   color: #b6b6b6;
   text-decoration: underline;
+}
+
+.row a:hover .muted {
+    color: #b6b6b6;
+}
+
+a.nav-link:hover {
+    color: #fff !important;
+    text-decoration: underline;
+    font-weight: 500;
 }
 
 hr {
@@ -66,6 +89,27 @@ hr {
 
 tbody {
   color: #949ba2;
+}
+
+.status-list a,
+.status-list img {
+    margin-left: 0.3em;
+    vertical-align: bottom;
+}
+
+.status-list small {
+    margin-right: 0.5em;
+}
+
+.status-list a i {
+    margin-top: 7px;
+    font-size: 1.3em;
+}
+
+.row.stats strong {
+    font-size: 3em;
+    font-weight: 300;
+    color: #dde8f3;
 }
 
 footer {

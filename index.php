@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="./css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="./css/froala_blocks.min.css">
-    <link rel="stylesheet" type="text/css" href="./css/app.css">
+    <link rel="stylesheet" type="text/css" href="./css/app.css?201912012231">
 </head>
 
 <body id="top">
@@ -26,12 +26,14 @@
 
                 <div class="collapse navbar-collapse justify-content-center col-8" id="navbarNav4">
                     <ul class="navbar-nav justify-content-center">
+                        <li class="nav-item"><a class="nav-link" href="https://cc.uffs.edu.br">CC</a></li>
+                        <li class="nav-item"><a class="nav-link" href="http://uffs.edu.br">UFFS</a></li>
                     </ul>
                 </div>
 
                 <ul class="navbar-nav col-2 justify-content-end">
                     <li class="nav-item">
-                        <a class="nav-link" href="https://www.froala.com"><i class="fa fa-github"></i> Github</a>
+                        <a class="nav-link" href="https://github.com/ccuffs/"><i class="fa fa-github"></i> Github</a>
                     </li>
                 </ul>
             </nav>
@@ -40,33 +42,31 @@
 
     <div class="container">
         <div class="row">
-            <div class="col-6">
+            <div class="col-8">
                 <div class="panel">
                     <div class="panel-body">
                         <h3><i class="fa fa-bar-chart"></i> Stats </h3>
                         <hr>
                         <p>
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco
-                            laboris nisi ut aliquip ex ea commodo consequat.
+                            Statistics presented below are gathered from CI builds. They might be different from the real amount of commits shown in the project repository. 
                         </p>
                         <hr>
-                        <div class="row">
+                        <div class="row stats">
                             <div class="col-3">
-                                <small>Today</small><br />
-                                <strong>20.13 <i class="fa fa-user"></i></strong>
+                                <i class="fa fa-server muted" title="Number of monitored systems"></i> Projects<br />
+                                <strong><?php echo $app->stats('systems'); ?></strong>
                             </div>
                             <div class="col-3">
-                                <small>Last</small><br />
-                                <strong>20.73 <i class="fa fa-user"></i></strong>
+                                <i class="fa fa-code-fork muted" title="All tracked commits"></i> Total commits<br />
+                                <strong><?php echo $app->stats('commits_total'); ?></strong>
                             </div>
                             <div class="col-md-3 col-xs-6">
-                                <small>Last</small><br />
-                                <strong>20.53 <i class="fa fa-user"></i></strong>
+                                <i class="fa fa-clock-o muted" title="Commits today"></i> Daily commits<br />
+                                <strong><?php echo $app->stats('commits_today'); ?></strong>
                             </div>
                             <div class="col-md-3 col-xs-6">
-                                <small>Something</small><br />
-                                <strong>20.24 <i class="fa fa-user"></i></strong>
+                                <i class="fa fa-calendar-o muted" title="Commits this week"></i> Weekly commits<br />
+                                <strong><?php echo $app->stats('commits_week'); ?></strong>
                             </div>
                         </div>
                     </div>
@@ -75,19 +75,21 @@
         </div>
 
         <?php
-            foreach($app->getSystems() as $name => $system) {
+            foreach($app->getSystems() as $id => $system) {
         ?>
         <div class="row">
             <div class="col-12">
                 <div class="panel panel-filled">
-                    <div class="panel-heading">
-                        <h2 class="float-left"><i class="fa fa-server"></i> <?php echo $name; ?></h2>
+                    <div class="panel-heading status-list">
+                        <h2 class="float-left"><i class="fa fa-server"></i> <?php echo $id; ?><small class="muted"><?php echo $system['name']; ?></small></h2>
+                        <?php if(!empty($system['repo']['url'])) { ?><a href="<?php echo $system['repo']['url']; ?>" target="_blank" title="Github repository"><i class="fa fa-github muted"></i></a><?php } ?>
+                        <?php if(!empty($system['production_url'])) { ?><a href="<?php echo $system['production_url']; ?>" target="_blank" title="Production URL"><i class="fa fa-gg-circle muted"></i></a><?php } ?>
                         <div class="float-right">
-                            <img src="https://img.shields.io/github/workflow/status/<?php echo $system['repo']['owner']; ?>/<?php echo $name; ?>/<?php echo $system['github_workflow_name']; ?>?label=%20&logo=github&logoColor=white&style=for-the-badge" title="Build status" />
+                            <img src="https://img.shields.io/github/workflow/status/<?php echo $system['repo']['owner']; ?>/<?php echo $id; ?>/<?php echo $system['github_workflow_name']; ?>?label=%20&logo=github&logoColor=white&style=for-the-badge" title="Build status" />
                         </div>
                     </div>
                     <div class="panel-body">
-                        <table id="tableServices-<?php echo $name; ?>" class="table table-striped table-hover table-responsive-sm no-footer"
+                        <table id="tableServices-<?php echo $id; ?>" class="table table-striped table-hover table-responsive-sm no-footer"
                             role="grid">
                             <thead>
                                 <tr role="row">
@@ -101,7 +103,7 @@
                             <tbody>
                                 <?php foreach($system['commits'] as $commit) { ?>
                                     <tr role="row">
-                                        <td><?php echo $name; ?></td>
+                                        <td><?php echo $id; ?></td>
                                         <td><?php echo date('Y-m-d H:i:s', $commit['time']); ?></td>
                                         <td>
                                             <span class="badge badge-<?php echo $app->getBranchStyle($commit['branch']); ?>"><?php echo $commit['branch']; ?></span>

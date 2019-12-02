@@ -18,8 +18,15 @@ class App {
             'systems' => 0
         );
 
-        //var_dump($this->config);
         $this->loadSystems($base_dir);
+    }
+
+    public function stats($name, $fmt = '%04d') {
+        if(!isset($this->stats[$name])) {
+            throw new Exception('Unknown stats named "'.$name.'". Available are: ' . implode(', ', array_keys($this->stats)));
+        }
+
+        return sprintf($fmt, $this->stats[$name]);
     }
 
     public function getSystems() {
