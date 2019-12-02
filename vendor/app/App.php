@@ -59,7 +59,7 @@ class App {
         $ini_info = @parse_ini_file(__DIR__ . '/../../data/'.$dir_name.'.ini');
 
         if($ini_info === false) {
-            $ini_info = parse_ini_file(__DIR__ . '/../../data/.default.ini');
+            $ini_info = parse_ini_file(__DIR__ . '/../../data/default.ini');
         }
 
         $base_info = array(
