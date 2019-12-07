@@ -13,7 +13,7 @@
     <link rel="stylesheet" type="text/css" href="./css/font-awesome.min.css">
     <link rel="stylesheet" type="text/css" href="./css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="./css/froala_blocks.min.css">
-    <link rel="stylesheet" type="text/css" href="./css/app.css?201912012231">
+    <link rel="stylesheet" type="text/css" href="./css/app.css?20191207">
 </head>
 
 <body id="top">
@@ -21,19 +21,18 @@
         <div class="container">
             <nav class="navbar navbar-expand-md no-gutters">
                 <div class="col-2 text-left">
-                    <i class="fa fa-area-chart"></i> ci.uffs.cc
+                    <h1><i class="fa fa-area-chart"></i>ci.uffs.cc</h1>
                 </div>
 
                 <div class="collapse navbar-collapse justify-content-center col-8" id="navbarNav4">
                     <ul class="navbar-nav justify-content-center">
-                        <li class="nav-item"><a class="nav-link" href="https://cc.uffs.edu.br">CC</a></li>
-                        <li class="nav-item"><a class="nav-link" href="http://uffs.edu.br">UFFS</a></li>
+                        <li class="nav-item"></li>
                     </ul>
                 </div>
 
                 <ul class="navbar-nav col-2 justify-content-end">
                     <li class="nav-item">
-                        <a class="nav-link" href="https://github.com/ccuffs/"><i class="fa fa-github"></i> Github</a>
+                        <a class="nav-link" href="https://github.com/ccuffs/"><i class="fa fa-github fa-2x"></i></a>
                     </li>
                 </ul>
             </nav>
@@ -48,7 +47,7 @@
                         <h3><i class="fa fa-bar-chart"></i> Stats</h3>
                         <hr>
                         <p>
-                            This dashboard shows the statistics of CI buils related to the infra-strucutre of the <a href="https://cc.uffs.edu.br" target="_blank">Computer Science program</a> at <a href="http://www.uffs.edu.br" target="_blank">Federal University of Fronteira Sul</a>. Numbers presented below are gathered from CI builds. They might be different from the real amount of commits shown in the project repository. 
+                            This dashboard shows the statistics of CI buils related to the infra-strucutre of the <a href="https://cc.uffs.edu.br" target="_blank">Computer Science program</a> at <a href="http://www.uffs.edu.br" target="_blank">Federal University of Fronteira Sul</a>. Numbers presented below are gathered from CI builds. They might be different from the real amount of commits shown in the projects' repository. 
                         </p>
                         <hr>
                         <div class="row stats">
@@ -85,7 +84,7 @@
                         <?php if(!empty($system['repo']['url'])) { ?><a href="<?php echo $system['repo']['url']; ?>" target="_blank" title="Github repository"><i class="fa fa-github muted"></i></a><?php } ?>
                         <?php if(!empty($system['production_url'])) { ?><a href="<?php echo $system['production_url']; ?>" target="_blank" title="Production URL"><i class="fa fa-gg-circle muted"></i></a><?php } ?>
                         <div class="float-right">
-                            <img src="https://img.shields.io/github/workflow/status/<?php echo $system['repo']['owner']; ?>/<?php echo $id; ?>/<?php echo $system['github_workflow_name']; ?>?label=%20&logo=github&logoColor=white&style=for-the-badge" title="Build status" />
+                            <?php if(!empty($system['build_status_badge_url'])) { ?><img src="<?php echo $system['build_status_badge_url']; ?>" title="Build status" /><?php } ?>
                         </div>
                     </div>
                     <div class="panel-body">
@@ -128,30 +127,36 @@
     <footer class="fdb-block footer-large bg-dark">
         <div class="container">
             <div class="row align-items-top text-center text-md-left">
-                <div class="col-12 col-sm-6 col-md-4">
-                    <h3>Country A</h3>
-                    <p>Street Address 52<br>Contact Name</p>
-                    <p>+44 827 312 5002</p>
-                    <p><a href="https://www.froala.com">countrya@amazing.com</a></p>
+                <div class="col-5 text-md-left">
+                    <h3>About</h3>
+                    <p>This website was made by the infra-structure team of the <a href="https://cc.uffs.edu.br">Computer Science program</a> at the <a href="http://www.uffs.edu.br">Federal University of Fronteira Sul</a>, campus Chapecó/SC, Brazil.</p>
+                    
+                    <p>Contact information:</p>
+                    <p><a href="mailto:computacao.ch@uffs.edu.br"><i class="fa fa-envelope-o"></i> computacao.ch@uffs.edu.br</a></p>
                 </div>
 
-                <div class="col-12 col-sm-6 col-md-4 mt-4 mt-sm-0">
-                    <h3>Country B</h3>
-                    <p>Street Address 100<br>Contact Name</p>
-                    <p>+13 827 312 5002</p>
-                    <p><a href="https://www.froala.com">countryb@amazing.com</a></p>
+                <div class="col-1"></div>
+
+                <div class="col-3">
+                    <h3>Links</h3>
+                    <li><a href="https://cc.uffs.edu.br">Ciência da Computação</a></li>
+                    <li><a href="https://grintex.uffs.cc">Grintex</a></li>
+                    <li><a href="http://www.uffs.edu.br">UFFS</a></li>
                 </div>
 
-                <div class="col-12 col-md-4 mt-5 mt-md-0 text-md-left">
-                    <h3>About Us</h3>
-                    <p>Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there
-                        live the blind texts.</p>
+                <div class="col-1"></div>
+
+                <div class="col-2">
+                    <h3>Social</h3>
+                    <li><a href="https://github.com/ccuffs"><i class="fa fa-github"></i> Github</a></li>
+                    <li><a href="https://twitter.com/computacaouffs"><i class="fa fa-twitter"></i> Twitter</a></li>
+                    <li><a href="https://instagram.com/computacaouffs"><i class="fa fa-instagram"></i> Instagram</a></li>
                 </div>
             </div>
 
             <div class="row mt-5">
                 <div class="col text-center">
-                    <p class="muted">© 2019 All Rights Reserved</p>
+                    <p class="muted">© <?php echo date('Y'); ?> All Rights Reserved</p>
                 </div>
             </div>
         </div>
