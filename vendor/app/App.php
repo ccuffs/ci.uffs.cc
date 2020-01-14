@@ -122,9 +122,12 @@ class App {
         return $branch_parts['basename'];
     }
 
-    private function sortCommitsByTime(array $parsed_commits) {
+    private function sortCommitsByTime(array &$parsed_commits) {
         usort($parsed_commits, function($a, $b) {
-            return $a['time'] < $b['time'];
+            if ($a['time'] == $b['time']) {
+                return 0;
+            }
+            return ($a['time'] > $b['time']) ? -1 : 1;
         });
     }
 
@@ -174,7 +177,7 @@ class App {
                     );
                 }
 
-                $this->sortCommitsByTime($system['commits']);
+                $this->sortCommitsByTime($system['commits']);               
                 $this->countCommitStats($system['commits']);
             }
 
