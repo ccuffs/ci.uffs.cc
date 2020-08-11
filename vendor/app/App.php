@@ -21,6 +21,14 @@ class App {
         $this->loadSystems($base_dir);
     }
 
+    public function config($key, $default = null) {
+        if(isset($this->config[$key])) {
+            return $this->config[$key];
+        }
+
+        return null;
+    }
+
     public function stats($name, $fmt = '%04d') {
         if(!isset($this->stats[$name])) {
             throw new Exception('Unknown stats named "'.$name.'". Available are: ' . implode(', ', array_keys($this->stats)));
