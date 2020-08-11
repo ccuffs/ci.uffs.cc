@@ -118,7 +118,7 @@
                             <tbody>
                                 <?php $row = 0; ?>
                                 <?php foreach($system['commits'] as $commit) { ?>
-                                    <tr role="row" <?php echo $row++ > $app->config('view_max_rows', 20) ? 'style="display:none;"' : '' ?> class="row-<?php echo $id; ?>">
+                                    <tr role="row" <?php echo ($row > $app->config('view_max_rows', 20) ? 'style="display:none;"' : ''); ?> class="row-<?php echo $id; ?>">
                                         <td><?php echo $id; ?></td>
                                         <td><?php echo date('Y-m-d H:i:s', $commit['time']); ?></td>
                                         <td>
