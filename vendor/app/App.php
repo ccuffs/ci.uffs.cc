@@ -56,6 +56,10 @@ class App {
     private function splitGitRepoURL($git_repo_url) {
         $parts = explode('/', $git_repo_url);
 
+        if(count($parts) < 3) {
+            $parts = ['', '', ''];
+        }
+
         return array(
             'url' => $git_repo_url,
             'owner' => $parts[count($parts) - 2],
@@ -70,8 +74,13 @@ class App {
         return str_replace($entities, $replacements, urlencode($string));
     }
 
+    public function buildFSPath(...$segments) {
+        return join(DIRECTORY_SEPARATOR, $segments);
+    }
+
     private function createSystemEntry($dir_name) {
-        $ini_info = @parse_ini_file(__DIR__ . '/../../data/'.$dir_name.'.ini');
+        $system_ini_dir = join(DIRECTORY_SEPARATOR, array(__DIR__, '..', '..', 'data', $dir_name.'.ini'));
+        $ini_info = @parse_ini_file($system_ini_dir);
 
         if($ini_info === false) {
             $ini_info = parse_ini_file(__DIR__ . '/../../data/default.ini');

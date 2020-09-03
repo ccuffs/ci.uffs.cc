@@ -91,17 +91,17 @@
                         <table id="tableServices-<?php echo $id; ?>" class="table table-striped table-hover table-responsive-sm no-footer" role="grid">
                             <thead>
                                 <?php
-                                    $qrCodeFmt = isset($system['qr_code_fmt']) && !empty($system['qr_code_fmt']) ? $system['qr_code_fmt'] : '';
+                                    $qrCodeFmt = isset($system['qr_code_fmt']) ? $system['qr_code_fmt'] : '';
                                     $commitLink = count($system['commits']) >= 1 ? $system['commits'][array_key_first($system['commits'])]['url'] : '';
                                     $qrLink = sprintf($qrCodeFmt, $app->config('base_url'), $commitLink);
                                 ?>
-                                <?php if(isset($system['qr_code_fmt']) && !empty($system['qr_code_fmt']) && !empty($commitLink)) { ?>
+                                <?php if(!empty($qrCodeFmt) && !empty($commitLink)) { ?>
                                     <tr role="row" class="most-recent">
                                         <td>
                                             <img src="http://api.qrserver.com/v1/create-qr-code/?data=<?php echo urlencode($qrLink); ?>&size=512x512&color=71C9B8&bgcolor=343434" alt="QR code" class="qr-code" />
                                         </td>
                                         <td colspan="3">
-                                            <h3>Mobile acess</h3>
+                                            <h3>Mobile access</h3>
                                             <p>This project was flagged as an application available on mobile platforms. <br />Scan the QR code using your mobile device to acess the most recent build.</p>
                                             <p><a class="muted" href="<?php echo $qrLink; ?>"><?php echo $qrLink; ?></a></p>
                                         </td>
