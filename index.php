@@ -47,7 +47,7 @@
                         <h3><i class="fa fa-bar-chart"></i> Stats</h3>
                         <hr>
                         <p>
-                            This dashboard shows the statistics of CI buils related to the infra-strucutre of the <a href="https://cc.uffs.edu.br" target="_blank">Computer Science program</a> at <a href="http://www.uffs.edu.br" target="_blank">Federal University of Fronteira Sul</a>. Numbers presented below are gathered from CI builds. They might be different from the real amount of commits shown in the projects' repository. 
+                            This dashboard shows the statistics of CI buils related to the infra-strucutre of the <a href="https://cc.uffs.edu.br" target="_blank">Computer Science program</a> (and partners) at <a href="http://www.uffs.edu.br" target="_blank">Federal University of Fronteira Sul</a>. Numbers presented below are gathered from CI builds. They might be different from the real amount of commits shown in the projects' repository. 
                         </p>
                         <hr>
                         <div class="row stats">
@@ -73,6 +73,36 @@
             </div>
         </div>
 
+        <div class="row">
+            <div class="col-12">
+                <h3><i class="fa fa-binoculars" aria-hidden="true"></i> Summary</h3>
+                <table class="table table-hover table-responsive-sm no-footer" role="grid">
+                    <thead>
+                        <tr>
+                            <th style="width: 10%;"></th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <?php foreach($app->getSystems() as $id => $system) { ?>
+                            <tr>
+                                <td>
+                                    <div class="float-left">
+                                        <?php if(!empty($system['build_status_badge_url'])) { ?><img src="<?php echo $system['build_status_badge_url']; ?>" title="Build status" /><?php } ?>
+                                    </div>
+                                </td>    
+                                <td>
+                                    <a href="#<?php echo $id; ?>"><?php echo $id ?></a> <small class="muted"><?php echo $system['name']; ?></small>
+                                    <?php if(!empty($system['repo']['url'])) { ?><a href="<?php echo $system['repo']['url']; ?>" target="_blank" title="Github repository"><i class="fa fa-github muted"></i></a><?php } ?>
+                                    <?php if(!empty($system['production_url'])) { ?><a href="<?php echo $system['production_url']; ?>" target="_blank" title="Production URL"><i class="fa fa-gg-circle muted"></i></a><?php } ?>
+                                </td>
+                            </tr>
+                        <?php } ?>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
         <?php
             foreach($app->getSystems() as $id => $system) {
         ?>
@@ -80,7 +110,7 @@
             <div class="col-12">
                 <div class="panel panel-filled">
                     <div class="panel-heading status-list">
-                        <h2 class="float-left"><i class="fa fa-server"></i> <?php echo $id; ?><small class="muted"><?php echo $system['name']; ?></small></h2>
+                        <h2 class="float-left" id="<?php echo $id; ?>"><i class="fa fa-server"></i> <?php echo $id; ?><small class="muted"><?php echo $system['name']; ?></small></h2>
                         <?php if(!empty($system['repo']['url'])) { ?><a href="<?php echo $system['repo']['url']; ?>" target="_blank" title="Github repository"><i class="fa fa-github muted"></i></a><?php } ?>
                         <?php if(!empty($system['production_url'])) { ?><a href="<?php echo $system['production_url']; ?>" target="_blank" title="Production URL"><i class="fa fa-gg-circle muted"></i></a><?php } ?>
                         <div class="float-right">
